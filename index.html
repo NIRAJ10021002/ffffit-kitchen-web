@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIT KITCHEN</title>
+
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+      background: #111;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Navbar (Fixed) */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 10%;
+      width: 80%;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      z-index: 1000;
+    }
+
+    .brand {
+      font-family: 'Frijole', cursive;
+      font-size: 1.5rem;
+      color: #fff;
+    }
+
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .menu-toggle span {
+      width: 25px;
+      height: 3px;
+      background: #fff;
+      border-radius: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+
+    .nav-links a:hover {
+      color: #ffcc00;
+    }
+
+    /* Bike Animation */
+    .road-container {
+      position: absolute;
+      top: 5px;
+      left: 25%;
+      width: 50%;
+      height: 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .vehicle {
+      position: absolute;
+      top: 0;
+      left: -100px;
+      width: 80px;
+      animation: moveVehicle 10s linear infinite;
+    }
+
+    .vehicle img {
+      width: 80px;
+      height: auto;
+    }
+
+    .wheel {
+      position: absolute;
+      bottom: 2px;
+      width: 14px;
+      height: 14px;
+      background: #fff;
+      border: 2px solid #000;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .wheel.left {
+      left: 12px;
+    }
+
+    .wheel.right {
+      right: 12px;
+    }
+
+    .smoke {
+      position: absolute;
+      top: 20px;
+      left: -30px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      animation: smokeAnim 2s ease-out infinite;
+      filter: blur(2px);
+    }
+
+    @keyframes smokeAnim {
+      0% { transform: translateX(0) translateY(0) scale(1); opacity: 0.6; }
+      100% { transform: translateX(-40px) translateY(-40px) scale(2); opacity: 0; }
+    }
+
+    @keyframes moveVehicle {
+      0% { left: 0%; }
+      100% { left: 100%; }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Slider */
+    .slider {
+      width: 100vw;
+    }
+
+    .swiper {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+    }
+
+    .swiper-slide {
+      position: relative;
+    }
+
+    .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Responsive - Mobile Navbar Fix */
+    @media (max-width: 768px) {
+      .navbar {
+        height: 50px;
+        padding: 0 12px;
+      }
+
+      .brand {
+        font-size: 1.2rem;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+
+      .menu-toggle span {
+        width: 20px;
+        height: 2px;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        padding: 15px;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+      }
+
+      .nav-links.show {
+        display: flex;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+
+      .nav-links a {
+        font-size: 0.9rem;
+        padding: 8px 0;
+      }
+
+      .vehicle {
+        width: 60px;
+      }
+
+      .vehicle img {
+        width: 60px;
+      }
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Slider -->
+  <div class="slider">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide"><img src="fit1.jpg" alt="Slide 1" /></div>
+        <div class="swiper-slide"><img src="fit2.jpg" alt="Slide 2" /></div>
+        <div class="swiper-slide"><img src="fit8.jpg" alt="Slide 3" /></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="brand">FIT KITCHEN</div>
+    <div class="road-container">
+      <div class="vehicle">
+        <img src="bike.png" alt="Delivery Bike" />
+        <div class="wheel left"></div>
+        <div class="wheel right"></div>
+        <div class="smoke"></div>
+        <div class="smoke" style="animation-delay: 0.3s"></div>
+        <div class="smoke" style="animation-delay: 0.6s"></div>
+        <div class="smoke" style="animation-delay: 0.9s"></div>
+      </div>
+    </div>
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a href="#" onclick="toggleMenu()">HOME</a>
+      <a href="#" onclick="toggleMenu()">MENU</a>
+      <a href="#" onclick="toggleMenu()">CONTACT</a>
+      <a href="#" onclick="toggleMenu()">ABOUT</a>
+      <a href="#" onclick="toggleMenu()">SUGGESTIONS</a>
+    </div>
+  </div>
+
+  <!-- Swiper JS -->
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script>
+    function toggleMenu() {
+      document.getElementById("navLinks").classList.toggle("show");
+    }
+
+    new Swiper('.mySwiper', {
+      loop: true,
+      effect: 'fade',
+      autoplay: { delay: 4000 }
+      // No pagination dots
+    });
+  </script>
+
+<!-- 💪 THE FIT KITCHEN ADVANTAGE SECTION (Final – Allan font, centred on mobile, smart auto‑scroll) -->
+<link href="https://fonts.googleapis.com/css2?family=Allan:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  #advantage{background:#fff;padding:60px 20px;font-family:'Poppins',sans-serif;}
+
+  /* 🔰 Logo + Heading */
+  .adv-heading{
+    display:flex;align-items:center;justify-content:center;
+    gap:12px;flex-wrap:nowrap;margin-bottom:40px;
+  }
+  .adv-heading img{height:50px;}
+  .adv-heading h2{
+    font-family:'Allan',cursive;font-size:2.6rem;color:#111;
+    font-weight:700;letter-spacing:.5px;margin:0;white-space:nowrap;
+  }
+
+  /* 🔹 Horizontal cards */
+  .adv-wrap{
+    display:flex;gap:20px;overflow-x:auto;scroll-behavior:smooth;padding-bottom:10px;
+  }
+  .adv-wrap::-webkit-scrollbar{display:none;}
+
+  .adv-card{
+    flex:0 0 250px;background:#f9f9f9;border-radius:15px;padding:30px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    opacity:0;transform:translateY(60px);
+    transition:opacity .6s ease,transform .6s ease;
+  }
+  .adv-card.show{opacity:1;transform:translateY(0);}
+  .adv-card i{font-size:36px;margin-bottom:15px;}
+  .adv-card h3{color:#333;font-size:1.1rem;font-weight:600;}
+  .adv-card p{color:#555;font-size:.9rem;}
+
+  .c1 i{color:#ff6f00;} .c2 i{color:#4caf50;}
+  .c3 i{color:#2196f3;} .c4 i{color:#e91e63;}
+
+  /* 📱 Mobile tweaks */
+  @media(max-width:600px){
+    .adv-heading{justify-content:center;gap:10px;margin-bottom:25px;}
+    .adv-heading img{height:40px;}
+    .adv-heading h2{font-size:1.2rem;}
+
+    .adv-wrap{gap:15px;}
+    .adv-card{flex:0 0 70%;padding:20px;}
+    .adv-card i{font-size:28px;}
+    .adv-card h3{font-size:1rem;}
+    .adv-card p{font-size:.8rem;}
+  }
+</style>
+
+<section id="advantage">
+  <div style="max-width:1100px;margin:auto;">
+    <div class="adv-heading">
+      <img src="logo.jpg" alt="Fit Kitchen Logo">
+      <h2>The Fit Kitchen Advantage</h2>
+    </div>
+
+    <div class="adv-wrap" id="adv-cards">
+      <div class="adv-card c1"><i class="fas fa-utensils"></i><h3>Customized Meals 24×7</h3><p>Breakfast, lunch, and dinner tailored to your fitness goals – fat loss to muscle gain – delivered any time.</p></div>
+      <div class="adv-card c2"><i class="fas fa-dumbbell"></i><h3>Trainer‑Guided Meal Plans</h3><p>Certified trainer designs monthly meals around your protein & nutrition targets with science‑backed precision.</p></div>
+      <div class="adv-card c3"><i class="fas fa-motorcycle"></i><h3>Free Delivery</h3><p>Fast & free doorstep delivery for every meal – convenience and consistency in one go.</p></div>
+      <div class="adv-card c4"><i class="fas fa-shield-alt"></i><h3>Hygiene & Safety</h3><p>Every meal is prepared in a sanitized kitchen and sealed to lock in freshness and nutrition.</p></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  /* --------- Scroll‑reveal stagger --------- */
+  const cards=document.querySelectorAll('.adv-card');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const idx=[...cards].indexOf(e.target);
+        setTimeout(()=>e.target.classList.add('show'),idx*150);
+        obs.unobserve(e.target);
+      }
+    });
+  },{threshold:.2});
+  cards.forEach(c=>obs.observe(c));
+
+  /* --------- Smart auto‑scroll (pauses on user scroll) --------- */
+  const container=document.getElementById('adv-cards');
+  let autoInterval=null, restartTimeout=null, scrollStep=container.offsetWidth*0.7;
+
+  function startAuto(){
+    if(autoInterval) return;
+    autoInterval=setInterval(()=>{
+      if(container.scrollLeft+container.offsetWidth>=container.scrollWidth-5){
+        container.scrollTo({left:0,behavior:'smooth'});
+      }else{
+        container.scrollBy({left:scrollStep,behavior:'smooth'});
+      }
+    },5000);            // 5‑second cycle
+  }
+
+  function stopAuto(){
+    clearInterval(autoInterval);autoInterval=null;
+    clearTimeout(restartTimeout);
+    restartTimeout=setTimeout(startAuto,5000); // restart after 5 s inactivity
+  }
+
+  /* Start auto when page loads */
+  startAuto();
+
+  /* Pause on any user interaction */
+  ['wheel','touchstart','pointerdown'].forEach(evt=>{
+    container.addEventListener(evt,stopAuto,{passive:true});
+  });
+</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Special Dishes | Fit Kitchen</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Allan&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f8f8f8;
+    }
+
+    /* SECTION HEADING */
+    #special-section {
+      padding: 30px 20px 0;
+      background: #fff;
+    }
+
+    #special-section h2 {
+      font-family: 'Allan', cursive;
+      text-align: center;
+      font-size: 2rem;
+      color: #222;
+      margin: 0 0 20px;
+    }
+
+    /* CARD CONTAINER SCROLL */
+    .scroll-wrap {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 0 20px 20px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .scroll-wrap::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* CARD STYLING */
+    .dish-card {
+      scroll-snap-align: start;
+      flex: 0 0 240px;
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      position: relative;
+    }
+
+    .dish-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .dish-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .dish-info {
+      padding: 12px 15px;
+    }
+
+    .dish-title {
+      font-weight: 600;
+      color: #333;
+      font-size: 1.05rem;
+    }
+
+    .dish-desc {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    /* IMAGE ZOOM VIEW */
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      display: none;
+    }
+
+    .overlay img {
+      width: 90%;
+      max-width: 500px;
+      border-radius: 10px;
+      object-fit: contain;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 1.8rem;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* RESPONSIVE TWEAK */
+    @media (max-width: 480px) {
+      .dish-card {
+        flex: 0 0 200px;
+      }
+
+      .dish-card img {
+        height: 140px;
+      }
+
+      #special-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<section id="special-section">
+  <h2>Our Special Dishes</h2>
+  <div class="scroll-wrap" id="dish-scroll">
+    <!-- 8 Cards -->
+    <div class="dish-card"><img src="s1.jpg" alt="" /><div class="dish-info"><div class="dish-title">Fat Loss Soup</div><div class="dish-desc">A detox herbal cleansing soup.</div></div></div>
+    <div class="dish-card"><img src="s2.jpg" alt="" /><div class="dish-info"><div class="dish-title">Tofu Power Wrap</div><div class="dish-desc">Grilled tofu, hummus & salad.</div></div></div>
+    <div class="dish-card"><img src="s3.jpg" alt="" /><div class="dish-info"><div class="dish-title">Protein Pasta</div><div class="dish-desc">High-protein pasta with veggies.</div></div></div>
+    <div class="dish-card"><img src="s4.jpg" alt="" /><div class="dish-info"><div class="dish-title">Muscle Meal Bowl</div><div class="dish-desc">Chicken, rice, beans & greens.</div></div></div>
+    <div class="dish-card"><img src="s5.jpg" alt="" /><div class="dish-info"><div class="dish-title">Oats Energy Bar</div><div class="dish-desc">Baked oats, peanut butter snack.</div></div></div>
+    <div class="dish-card"><img src="s6.jpg" alt="" /><div class="dish-info"><div class="dish-title">Keto Cut Meal</div><div class="dish-desc">Low-carb egg & avocado plate.</div></div></div>
+    <div class="dish-card"><img src="s7.jpg" alt="" /><div class="dish-info"><div class="dish-title">Vitamin Salad</div><div class="dish-desc">Loaded leafy greens & citrus.</div></div></div>
+    <div class="dish-card"><img src="s8.jpg" alt="" /><div class="dish-info"><div class="dish-title">Post Workout Shake</div><div class="dish-desc">Whey + banana + peanut butter.</div></div></div>
+  </div>
+</section>
+
+<!-- Image View Overlay -->
+<div class="overlay" id="img-view">
+  <i class="fas fa-times close-btn" onclick="closeImg()"></i>
+  <img id="view-img" src="" alt="full view" />
+</div>
+
+<script>
+  // Image click view
+  document.querySelectorAll('.dish-card img').forEach(img => {
+    img.addEventListener('click', () => {
+      document.getElementById('view-img').src = img.src;
+      document.getElementById('img-view').style.display = 'flex';
+    });
+  });
+
+  function closeImg() {
+    document.getElementById('img-view').style.display = 'none';
+  }
+
+  // Optional: Scroll to first card cleanly on load
+  window.addEventListener('load', () => {
+    const scrollArea = document.getElementById('dish-scroll');
+    scrollArea.scrollLeft = 0;
+  });
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
